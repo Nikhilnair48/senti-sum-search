@@ -1,0 +1,41 @@
+.table.table-hover {
+    padding-left: 15px;
+    padding-right: 15px;
+}
+
+/*
+ * width and overflow
+ * inline-block elements expand as much as content
+ * relative position makes z-index work
+ * explicit width and nowrap makes overflow work
+ */
+ div.sentence {
+    display: inline-block;
+    position: relative;
+    width: 100%;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
+  
+  /*
+   * higher z-index brings element to front
+   * auto width cancels the overflow
+   */
+  div.sentence:hover {
+    z-index: 1;
+    white-space: normal;
+    width: auto;
+  }
+
+  table {
+    font: larger sans-serif;
+    table-layout: fixed;
+    width: 500px;
+  }
+  th:nth-child(1) {
+    width: 90%;
+  }
+  th:nth-child(2) {
+    width: 10%;
+  }
