@@ -9,10 +9,19 @@ class Top50Section extends React.Component {
         this.renderBody = this.renderBody.bind(this);
     }
 
+    
+
     renderBody() {
         let searchOutput = this.props.data;
-        let searchText = this.props.sentiSearch.input;        
+        let filterTerm = this.props.filterTerm;
+
         if(searchOutput) {
+            
+            if(this.props.filterTerm) {
+                searchOutput = searchOutput.filter(item => item.toLowerCase().includes(filterTerm));
+            }
+            
+            let searchText = this.props.sentiSearch.input;
             return (
                 searchOutput.map(sentence => {
                     return (

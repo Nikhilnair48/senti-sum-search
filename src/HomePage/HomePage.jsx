@@ -13,7 +13,8 @@ class HomePage extends React.Component {
             searchInput: "",
             top50Strings: [],
             allStrings: [],
-            active: 0
+            active: 0,
+            filterTableTerm: ""
         }
         this.searchSentiSum = this.searchSentiSum.bind(this);
         this.handleChange = this.handleChange.bind(this);
@@ -47,6 +48,14 @@ class HomePage extends React.Component {
 
     handleChange(e) {
         const { name, value } = e.target;
+        
+        // QUICK HACK. RESET FILTER TERM
+        if(name === "filterTableTerm") {
+            if(this.state.filterTableTerm.length > 0) {
+                this.setState({ filterTableTerm: "" });
+            }
+        }
+
         this.setState({
             [name]: value
         });
@@ -57,13 +66,13 @@ class HomePage extends React.Component {
         if(menuID == 0) {
             return (
                 <div className="top-fifty-section">
-                    <Top50Section data={this.state.top50Strings} />
+                    <Top50Section data={this.state.top50Strings} filterTerm={this.state.filterTableTerm} />
                 </div>  
             );
         } else {
             return (
                 <div className="all-strings-section">
-                    <CompleteListSection data={this.state.top50Strings} />
+                    <CompleteListSection data={this.state.top50Strings} filterTerm={this.state.filterTableTerm} />
                 </div>
             );
         }
