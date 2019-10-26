@@ -9,8 +9,6 @@ class Top50Section extends React.Component {
         this.renderBody = this.renderBody.bind(this);
     }
 
-    
-
     renderBody() {
         let searchOutput = this.props.data;
         let filterTerm = this.props.filterTerm;
@@ -20,8 +18,12 @@ class Top50Section extends React.Component {
             if(this.props.filterTerm) {
                 searchOutput = searchOutput.filter(item => item.toLowerCase().includes(filterTerm));
             }
-            
+
             let searchText = this.props.sentiSearch.input;
+            
+            searchOutput = searchOutput.sort(
+                (a,b) => a.match(new RegExp(searchText, "gi") || []).length > b.match(new RegExp(searchText, "gi") || []).length ? -1 : 1
+            )
             return (
                 searchOutput.map(sentence => {
                     return (
