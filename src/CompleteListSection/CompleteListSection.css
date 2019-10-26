@@ -34,3 +34,21 @@
   th:nth-child(2) {
     width: 10%;
   }
+
+.btn.btn-warning {
+    width: 80px;
+}
+
+.btn.btn-primary {
+    width: 90px;
+}
+
+.pagination {
+    display: flex;
+    justify-content: center;
+    width: 100%;
+}
+
+.pagination button:nth-child(n) {
+    margin-left: 15px;
+}

@@ -20,3 +20,15 @@
 .nav.nav-pills li:nth-child(n) {
     margin-left: 15px;
 }
+
+.top-fity-section, .all-strings-section {
+    margin-bottom: 30px;
+}
+
+.row.menu-row .col-md-8.offset-2 {
+    display: flex;
+}
+
+.table-search {
+    margin-left: auto;
+}
