@@ -12,8 +12,8 @@ class HomePage extends React.Component {
         this.state = {
             searchInput: "",
             top50Strings: [],
-            allStrings: [],
-            active: 0,
+            allStrings: {},
+            active: -1,
             filterTableTerm: ""
         }
         this.searchSentiSum = this.searchSentiSum.bind(this);
@@ -27,11 +27,13 @@ class HomePage extends React.Component {
         if(this.state.searchInput) {
             await this.props.search({input: this.state.searchInput});
             if(this.props.sentiSearch.results && Object.keys(this.props.sentiSearch.results.sentences).length > 0) {
+                
                 this.setState({
                     top50Strings: Object.keys(this.props.sentiSearch.results.sentences).slice(0, 49),
-                    allStrings: this.props.sentiSearch.results.sentences
+                    allStrings: this.props.sentiSearch.results.sentences,
+                    active: 0
                 });
-                this.menuClicked(0);
+                // this.menuClicked(0);
             } else {
                 alert("Your input didn't retrieve any sentences. Please try again.");
             }
@@ -62,14 +64,13 @@ class HomePage extends React.Component {
     }
 
     menuClicked(menuID) {
-
         if(menuID == 0) {
             return (
                 <div className="top-fifty-section">
                     <Top50Section data={this.state.top50Strings} filterTerm={this.state.filterTableTerm} />
                 </div>  
             );
-        } else {
+        } else if(menuID == 1) {
             return (
                 <div className="all-strings-section">
                     <CompleteListSection data={this.state.top50Strings} filterTerm={this.state.filterTableTerm} />
@@ -79,9 +80,7 @@ class HomePage extends React.Component {
     }
 
     renderTables() {
-        if(this.props.sentiSearch.results
-            && this.state.top50Strings && this.state.top50Strings.length > 0
-            && this.state.allStrings && Object.keys(this.state.allStrings).length > 0) {
+        if(this.state.top50Strings.length > 0 && this.state.allStrings && Object.keys(this.state.allStrings).length > 0 && this.state.active > -1) {
             return (
                 <div>
                     <div className="row menu-row">

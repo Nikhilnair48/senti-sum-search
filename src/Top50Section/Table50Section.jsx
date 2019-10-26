@@ -7,6 +7,17 @@ class Top50Section extends React.Component {
     constructor(props) {
         super(props);
         this.renderBody = this.renderBody.bind(this);
+        this.top50Helper = this.top50Helper.bind(this);
+    }
+
+    top50Helper(a,b) {
+        let searchText = this.props.sentiSearch.input;
+        let aList = a.match(new RegExp(searchText, "gi") || []);
+        let bList = b.match(new RegExp(searchText, "gi") || []);
+        if(aList != undefined && bList != undefined && aList != null && bList != null) {
+            return aList.length > bList.length ? -1 : 1;
+        }
+        return 0;
     }
 
     renderBody() {
@@ -20,10 +31,8 @@ class Top50Section extends React.Component {
             }
 
             let searchText = this.props.sentiSearch.input;
+            searchOutput = searchOutput.sort(this.top50Helper);
             
-            searchOutput = searchOutput.sort(
-                (a,b) => a.match(new RegExp(searchText, "gi") || []).length > b.match(new RegExp(searchText, "gi") || []).length ? -1 : 1
-            )
             return (
                 searchOutput.map(sentence => {
                     return (
