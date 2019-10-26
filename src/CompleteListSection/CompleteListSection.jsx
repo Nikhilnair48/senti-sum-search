@@ -1,9 +1,9 @@
 import React from 'react';
 import { connect } from 'react-redux';
 import { searchActions } from '../_actions';
-import './CompleteListSection';
+import './CompleteListSection.css';
 
-const PAGE_SIZE = 10;
+const PAGE_SIZE = 30;
 
 class CompleteListSection extends React.Component {
     constructor(props) {
@@ -17,17 +17,69 @@ class CompleteListSection extends React.Component {
             disabled: []
         }
         this.convertCurrentPageToTableBody = this.convertCurrentPageToTableBody.bind(this);
+        this.onClickFirst = this.onClickFirst.bind(this);
+        this.onClickLast = this.onClickLast.bind(this);
+        this.onClickNext = this.onClickNext.bind(this);
+        this.onClickPrev = this.onClickPrev.bind(this);
+        this.loadPage = this.loadPage.bind(this);
+        this.renderPagination = this.renderPagination.bind(this);
+        this.initState = this.initState.bind(this);
     }
 
     componentWillMount() {
         this.setState({
-            sentences: this.props.sentiSearch.results.sentences,
-            currentPage: Object.keys(this.props.sentiSearch.results.sentences).splice(0,29),
-            totalPageCount: Object.keys(this.props.sentiSearch.results.sentences).length / 30
-        })
+            sentences: sentenceList,
+            currentPage: sentenceList.slice(0,30),
+            totalPageCount: Math.ceil(sentenceList.length / PAGE_SIZE) - 1,
+            disabled: [],
+            currentPageNumber: 0
+        });
+    }
+
+    componentWillReceiveProps(newProps) {
+        this.initState(newProps);
+    }
+
+    componentWillMount() {
+        this.initState(this.props);
+    }
+
+    loadPage(props) {
+        let start = props.pageNumber * PAGE_SIZE;
+        return this.state.sentences.slice(start, start + PAGE_SIZE);
+    }
+
+    async onClickFirst() {
+        let nextPage = this.loadPage({pageNumber: 0});
+        this.setState({currentPageNumber: 0, disabled: [0,1], currentPage: nextPage });
+    }
+
+    async onClickLast() {
+        let nextPage = this.loadPage({pageNumber: this.state.totalPageCount});
+        this.setState({currentPageNumber: this.state.totalPageCount, disabled: [2,3], currentPage: nextPage});
+    }
+
+    async onClickNext() {
+        if(this.state.currentPageNumber <= this.state.totalPageCount) {
+            let current = this.state.currentPageNumber;
+            let nextPage = this.loadPage({pageNumber: 1 + current});
+            this.setState({currentPageNumber: ++this.state.currentPageNumber, 
+                disabled: current + 1 == this.state.totalPageCount ? [2,3] : [],
+                currentPage: nextPage});
+        }
+    }
+
+    async onClickPrev() {
+        if(this.state.currentPageNumber > 0) {
+            let nextPage = this.loadPage({pageNumber: this.state.currentPageNumber-1});
+            this.setState({currentPageNumber: --this.state.currentPageNumber, 
+                disabled: this.state.currentPageNumber-1 == 0 ? [0,1] : [],
+                currentPage: nextPage});
+        }
     }
 
     convertCurrentPageToTableBody() {
+        
         return (
             <tbody>
                 {
@@ -41,6 +93,20 @@ class CompleteListSection extends React.Component {
                 }
             </tbody>
         )
+       
+    }
+
+    renderPagination() {
+        if(this.state.totalPageCount > 0) {
+            return (
+                <section className="pagination">
+                    <button onClick={this.onClickFirst} className="btn btn-warning" disabled={this.state.disabled.includes(0) ? true : false}>first</button>
+                    <button onClick={this.onClickPrev} className="btn btn-primary" disabled={this.state.disabled.includes(1) ? true : false}>previous</button>
+                    <button onClick={this.onClickNext} className="btn btn-primary" disabled={this.state.disabled.includes(2) ? true : false}>next</button>
+                    <button onClick={this.onClickLast} className="btn btn-warning" disabled={this.state.disabled.includes(3) ? true : false}>last</button>
+                </section>
+            )
+        }
     }
 
     render() {
@@ -54,6 +120,7 @@ class CompleteListSection extends React.Component {
                     </thead>
                     {this.convertCurrentPageToTableBody()}
                 </table>
+                {this.renderPagination()}
             </div>
         )
     }
