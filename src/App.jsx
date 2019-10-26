@@ -16,7 +16,7 @@ class App extends React.Component {
     return (
       <Nav className="ml-auto">
         <Nav.Item>
-            <Nav.Link onClick="_blank">
+            <Nav.Link onClick={() => window.open("https://github.com/Nikhilnair48/senti-sum-searchg", "_blank")}>
                 Source Code
             </Nav.Link>
         </Nav.Item>
