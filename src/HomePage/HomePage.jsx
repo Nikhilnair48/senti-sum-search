@@ -53,6 +53,7 @@ class HomePage extends React.Component {
     }
 
     menuClicked(menuID) {
+
         if(menuID == 0) {
             return (
                 <div className="top-fifty-section">
@@ -75,10 +76,15 @@ class HomePage extends React.Component {
             return (
                 <div>
                     <div className="row menu-row">
-                        <ul className="nav nav-pills">
-                            <li><a href="#" className={this.state.active == 0 ? "nav-link active" : "nav-link"} onClick={() => this.setState({active: 0})}>Top 50</a></li>
-                            <li><a href="#" className={this.state.active == 1 ? "nav-link active" : "nav-link"} onClick={() => this.setState({active: 1})}>All sentences</a></li>
-                        </ul>
+                        <div className="col-md-8 offset-2">
+                            <ul className="nav nav-pills">
+                                <li><a href="#" className={this.state.active == 0 ? "nav-link active" : "nav-link"} onClick={() => this.setState({active: 0})}>Top 50</a></li>
+                                <li><a href="#" className={this.state.active == 1 ? "nav-link active" : "nav-link"} onClick={() => this.setState({active: 1})}>All sentences</a></li>
+                            </ul>
+                            <div className="table-search">
+                                <input type="text" value={this.state.filterTableTerm} className="form-control" name="filterTableTerm" onChange={this.handleChange} placeholder="Filter the results..." />
+                            </div>
+                        </div>
                     </div>
                     {this.menuClicked(this.state.active)}
                 </div>
