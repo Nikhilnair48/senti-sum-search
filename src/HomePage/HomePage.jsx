@@ -101,21 +101,32 @@ class HomePage extends React.Component {
     }
 
     render() {
-        return (
-            <div className="row homepage-container">
-                <div className="search-bar">
-                    <div className="col-md-4">
-                        <div className="input-group mb-3">
-                            <input type="text" className="form-control" name="searchInput" placeholder="Enter your search term..." value={this.state.searchInput} onChange={this.handleChange} onKeyPress={this.handleKeyPress} />
-                            <div className="input-group-append">
-                                <button className="btn btn-outline-primary" type="button" onClick={this.searchSentiSum}>Search</button>
+        if(this.props.sentiSearch.isFetching == true) {
+            return (
+                <div className="loading">
+                    <div className='uil-ring-css'>
+                        <div></div>
+                    </div>
+                </div>
+            )
+        }
+        else {
+            return (
+                <div className="row homepage-container">
+                    <div className="search-bar">
+                        <div className="col-md-4">
+                            <div className="input-group mb-3">
+                                <input type="text" className="form-control" name="searchInput" placeholder="Enter your search term..." value={this.state.searchInput} onChange={this.handleChange} onKeyPress={this.handleKeyPress} />
+                                <div className="input-group-append">
+                                    <button className="btn btn-outline-primary" type="button" onClick={this.searchSentiSum}>Search</button>
+                                </div>
                             </div>
                         </div>
                     </div>
+                    { this.renderTables() }
                 </div>
-                { this.renderTables() }
-            </div>
-        );
+            );
+        }
     }
 }
 
