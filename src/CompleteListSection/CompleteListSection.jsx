@@ -27,7 +27,8 @@ class CompleteListSection extends React.Component {
     }
 
     initState(props) {
-        let sentenceList = Object.keys(props.sentiSearch.results.sentences);
+        let sentenceList = Object.keys(props.sentiSearch.results.sentences).splice(1, 1000);
+
         if(props.filterTerm) {
             sentenceList = sentenceList.filter(item => item.toLowerCase().includes(props.filterTerm));
         }
