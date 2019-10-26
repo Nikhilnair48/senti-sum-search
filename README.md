@@ -28,21 +28,26 @@ README.md - you're reading me!
 
 ### (High level) Design
 
+Note: index.jsx includes App.jsx, which in turn renders the components below, if required.
+
 HomePage - The main component for the project. The HomePage will contain the search bar and two sections. 
 
-Search Bar - An input field with a button that triggers the API invocation
+Top50Secion - The first table, containing the top 50 strings pertaining to the users' search input. Top 50 currently determined by the number of occurences of the value searched by the user.
 
-Top50Secion - The first table, containing the top 50 strings pertaining to the users' search input
+CompleteListSection - The second table, containing all the strings pertaining to the users' search input. A maximum of 100, a page size of 30 and buttons to navigate are provided in this section.
 
-CompleteListSection - The second table, containing all the strings pertaining to the users' search input
+SentiSumTable (Not implemented) - A re-usable table component for the Top50Section & CompleteListSection.
 
-SentiSumTable - A re-usable table component for the Top50Section & CompleteListSection
+### Basic flow
 
-Redux design:
+Upon launch senti-sum-search, the user will be directed to a webpage with the a navbar
 
-actions - search, tableNavigation
+### Run locally
 
-constants - search, tableNavigation
+Clone the project: git clone https://github.com/Nikhilnair48/senti-sum-search.git
 
-To be completed.
+Change directory: cd senti-sum-search
 
+Install dependences: npm install
+
+Run: npm start
