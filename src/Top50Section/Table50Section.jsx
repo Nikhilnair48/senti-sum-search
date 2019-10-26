@@ -11,34 +11,38 @@ class Top50Section extends React.Component {
     }
 
     top50Helper(a,b) {
-        let searchText = this.props.sentiSearch.input;
-        let aList = a.match(new RegExp(searchText, "gi") || []);
-        let bList = b.match(new RegExp(searchText, "gi") || []);
-        if(aList != undefined && bList != undefined && aList != null && bList != null) {
-            return aList.length > bList.length ? -1 : 1;
-        }
-        return 0;
+        return b[1] - a[1];
     }
 
     renderBody() {
-        let searchOutput = this.props.data;
+        // RE-CREATE THE INCOMING OBJECT AS AN ARRAY, searchOutput, FOR EASE OF USE
+        let searchOutput = [];
+        let objectData = this.props.data;
+        for(var key in objectData) {
+            searchOutput.push([key, objectData[key]]);
+        }
+        
+        // USER ENTERED TEXT IN THE INPUT FIELD THAT FILTERS THE TABLE
         let filterTerm = this.props.filterTerm;
 
+        // IF ALL IS FINE AND DANDY,
         if(searchOutput) {
-            
-            if(this.props.filterTerm) {
-                searchOutput = searchOutput.filter(item => item.toLowerCase().includes(filterTerm));
-            }
 
-            let searchText = this.props.sentiSearch.input;
+            // FILTER searchOutput GIVEN THE USER INPUT, IF ANY
+            if(this.props.filterTerm) {
+                searchOutput = searchOutput.filter(item => item[0].toLowerCase().includes(filterTerm));
+            }
+            
+            // SORT THE TOP FEATURES BY THE COUNT (INDEX 1 IN THE ARRAY NOW)
             searchOutput = searchOutput.sort(this.top50Helper);
             
+            // RENDERRR
             return (
-                searchOutput.map(sentence => {
+                searchOutput.map(topFeatures => {
                     return (
-                        <tr key={sentence}>
-                            <td><div className="sentence">{sentence}</div></td>
-                            <td>{sentence.match(new RegExp(searchText, "gi") || []).length}</td>
+                        <tr key={topFeatures[0]}>
+                            <td><div className="sentence">{topFeatures[0]}</div></td>
+                            <td>{topFeatures[1]}</td>
                         </tr>
                     )
                 })

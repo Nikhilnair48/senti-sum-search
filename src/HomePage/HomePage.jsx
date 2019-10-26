@@ -11,7 +11,7 @@ class HomePage extends React.Component {
         super(props);
         this.state = {
             searchInput: "",
-            top50Strings: [],
+            top50Strings: {},
             allStrings: {},
             active: -1,
             filterTableTerm: ""
@@ -29,7 +29,7 @@ class HomePage extends React.Component {
             if(this.props.sentiSearch.results && Object.keys(this.props.sentiSearch.results.sentences).length > 0) {
                 
                 this.setState({
-                    top50Strings: Object.keys(this.props.sentiSearch.results.sentences).slice(0, 49),
+                    top50Strings: this.props.sentiSearch.results.topFeatures,
                     allStrings: this.props.sentiSearch.results.sentences,
                     active: 0
                 });
@@ -80,7 +80,7 @@ class HomePage extends React.Component {
     }
 
     renderTables() {
-        if(this.state.top50Strings.length > 0 && this.state.allStrings && Object.keys(this.state.allStrings).length > 0 && this.state.active > -1) {
+        if(Object.keys(this.state.top50Strings).length > 0 && this.state.allStrings && Object.keys(this.state.allStrings).length > 0 && this.state.active > -1) {
             return (
                 <div>
                     <div className="row menu-row">
